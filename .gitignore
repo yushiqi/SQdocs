@@ -1,0 +1,11 @@
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+build/
+.idea/
+*.pyc
+venv/
+*.py[cod]
+*.so
+*.egg
+*.egg-info

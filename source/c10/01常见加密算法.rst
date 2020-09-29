@@ -1,0 +1,542 @@
+10.1 常见加密算法
+-----------------
+
+利用加密算法来对数据通信的过程进行加密传输是一种最常见的安全手段。通常利用这一手段能够达到以下三个目的：
+
+-  数据保密性，防止用户数据被窃取或泄露
+
+-  数据完整性，防止用户传输的数据被篡改
+
+-  通信双方身份确认，确保数据来源合法
+
+.. _常见加密算法-1:
+
+1. 常见加密算法
+~~~~~~~~~~~~~~~
+
+常见的加密算法分类如下：
+
++------------------+-------------------+
+| 分类             | 示例              |
++==================+===================+
+| 单向散列加密算法 | MD5、sha1、sha256 |
++------------------+-------------------+
+| 对称加密算法     | DES、3DES、AES    |
++------------------+-------------------+
+| 非对称加密算法   | RSA、ECC          |
++------------------+-------------------+
+
+2. 单向散列加密
+~~~~~~~~~~~~~~~
+
+单向散列加密算法常用于提取数据，验证数据的完整性。发送者将明文通过单向加密算法加密生成定长的密文串，然后将明文和密文串传递给接收方。接收方在收到报文后，将解明文使用相同的单向加密算法进行加密，得出加密后的密文串。随后与发送者发送过来的密文串进行对比，若发送前和发送后的密文串相一致，则说明传输过程中数据没有损坏；若不一致，说明传输过程中数据丢失了。其次也用于密码加密传递存储。单向加密算法只能用于对数据的加密，无法被解密，其特点为\ **定长输出**\ 、\ **雪崩效应**\ 。
+
+2.1 MD5加密算法
+^^^^^^^^^^^^^^^
+
+MD5加密算法用的是哈希函数，一般应用于对信息产生信息摘要，防止信息被篡改。最常见的使用是对密码加密、生成数字签名。从严格意义上来说，MD5是摘要算法，并非加密算法。MD5
+生成密文时，无论要加密的字符串有多长，它都会输出长度为 128bits
+的一个密文串，通常16 进制时为 32 个字符。
+
+.. code:: python
+
+   import hashlib
+
+   data = 'hello world'
+   hash = hashlib.md5(data.encode('utf-8'))
+   print(hash.hexdigest())
+
+2.2 SHA1加密算法
+^^^^^^^^^^^^^^^^
+
+SHA1加密算法，与MD5一样，也是目前较流行的摘要算法。但SHA1 比 MD5 的
+安全性更高。对长度小于 2 ^ 64 位的消息，SHA1会产生一个 160
+位的消息摘要。基于 MD5、SHA1
+的信息摘要特性以及不可逆，可以被应用在检查文件完整性， 数字签名等场景。
+
+.. code:: python
+
+   import hashlib
+
+   data = 'hello world'
+   sha1 = hashlib.sha1(data.encode("utf-8"))   #转码（字节流）
+   print(sha1.hexdigest())        #将字节码转成16进制
+
+2.3 SHA256加密算法
+^^^^^^^^^^^^^^^^^^
+
+SHA256是SHA2算法中的一种，如SHA2加密算法中有：SHA244、SHA256、SHA512等。SHA2属于SHA1的升级，SHA1是160位的哈希值，而SHA2是组合值，有不同的位数，其中最受欢迎的是256位（SHA256算法）。
+
+.. code:: python
+
+   import hashlib
+
+   data = 'hello world'
+   sha256 = hashlib.sha256(data.encode("utf-8"))   # 转码（字节流）
+   print(sha256.hexdigest())        # 将字节码转成16进制
+
+3. 对称加密算法
+~~~~~~~~~~~~~~~
+
+对称加密算法采用单密钥加密，在数据传输过程中，发送方将原始数据分割成固定大小的块，经过密钥和加密算法逐个加密后，发送给接收方；接收方收到加密后的报文后，结合密钥和解密算法解密组合后得出原始数据。由于加解密算法是公开的，因此在这过程中，密钥的安全传递就成为了至关重要的事了。而密钥通常来说是通过双方协商，以物理的方式传递给对方，或者利用第三方平台传递给对方，一旦这过程出现了密钥泄露，不怀好意的人就能结合相应的算法拦截解密出其加密传输的内容。
+
+AES、DES、3DES 都是对称的块加密算法，加解密的过程是可逆的。
+
+3.1 AES算法
+^^^^^^^^^^^
+
+AES算法是密码学中的高级加密标准，同时也是美国联邦政府采用的区块加密标准。这个标准用来替代原先的DES，已经被多方分析且广为全世界所使用。算法采用对称分组密码体制，密钥长度的最少支持为
+128 位、 192 位、256 位，分组长度 128
+位，算法应易于各种硬件和软件实现。AES本身就是为了取代DES的，AES具有更好的安全性、效率和灵活性。
+
+.. code:: python
+
+   import base64
+   from Crypto.Cipher import AES     
+   #python3 安装 Crypto pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pycryptodome
+
+   def decode(data, key):
+       """
+       AES 解密
+       :param data: 原始字符串
+       :param key: 密钥
+       :return: 加密后字符串，16进制
+       """
+       try:
+           aes = AES.new(str.encode(key), AES.MODE_ECB)  # 初始化加密器
+           decrypted_text = aes.decrypt(base64.decodebytes(bytes(data, encoding='utf8'))).decode("utf8")  # 解密
+           decrypted_text = decrypted_text[:-ord(decrypted_text[-1])]  # 去除多余补位
+       except Exception as e:
+           pass
+       return decrypted_text
+    
+   def encode(data, key):
+       """
+       AES 加密
+       :param data: 加密后的字符串，16进制
+       :param key: 密钥
+       :return:  解密后的字符串
+       """
+       while len(data) % 16 != 0:     # 补足字符串长度为16的倍数
+           data += (16 - len(data) % 16) * chr(16 - len(data) % 16)
+       data = str.encode(data)
+       aes = AES.new(str.encode(key), AES.MODE_ECB)  # 初始化加密器
+       return str(base64.encodebytes(aes.encrypt(data)), encoding='utf8').replace('\n', '')
+    
+   if __name__ == '__main__':
+       key = 'elf2d;_3&sd2sw,2'  # 密钥长度必须为16、24或32位，分别对应AES-128、AES-192和AES-256
+       data = "hello world"    # 待加密文本
+        
+       cipher = encode(data,key)
+       print("加密值：",cipher)
+       print("解密值：",decode(cipher,key))
+
+3.2 DES算法
+^^^^^^^^^^^
+
+DES算法为密码体制中的对称密码体制，又被称为美国数据加密标准，是1972年美国IBM公司研制的对称密码体制加密算法。明文按64位进行分组，密钥长64位，密钥事实上是56位参与DES运算（第8、16、24、32、40、48、56、64位是校验位，
+使得每个密钥都有奇数个1）分组后的明文组和56位的密钥按位替代或交换的方法形成密文组的加密方法。
+
+DES
+加密算法是对密钥进行保密，公开加密和解密算。只有知道发送方相同密钥的人才能解读获取的密文数据。想破译
+DES
+加密算法，就要搜索密钥的编码。对于56位长度的密钥来说，用穷举法，其运算次数为
+2 ^ 56 次。
+
+.. code:: python
+
+   from pyDes import des, CBC, PAD_PKCS5
+   import binascii
+    # pip install pyDes
+
+   def encode(s, secret_key):
+       """
+       DES 加密
+       :param s: 原始字符串
+       :param secret_key: 密钥
+       :return: 加密后字符串，16进制
+       """
+       iv = secret_key
+       k = des(secret_key, CBC, iv, pad=None, padmode=PAD_PKCS5)
+       en = k.encrypt(s, padmode=PAD_PKCS5)
+       return binascii.b2a_hex(en)
+    
+    
+   def decode(s, secret_key):
+       """
+       DES 解密
+       :param s: 加密后的字符串，16进制
+       :param secret_key: 密钥
+       :return:  解密后的字符串
+       """
+       iv = secret_key
+       k = des(secret_key, CBC, iv, pad=None, padmode=PAD_PKCS5)
+       de = k.decrypt(binascii.a2b_hex(s), padmode=PAD_PKCS5)
+       return de
+
+   if __name__ == '__main__':
+       key = 'drfocmnf'  # 密钥长度必须为8
+       data = "hello world"    # 待加密文本
+        
+       cipher = encode(data, key)
+       print("加密值：",cipher)
+       print("解密值：",decode(cipher,key))
+
+.. _des算法-1:
+
+3.3 3DES算法
+^^^^^^^^^^^^
+
+3DES又称Triple
+DES，是DES加密算法的一种模式，它使用2条不同的56位的密钥对数据进行三次加密。DES使用56位密钥和密码块的方法，而在密码块的方法中，文本被分成64位大小的文本块然后再进行加密。比起最初的DES，3DES更为安全。
+
+.. code:: python
+
+   import hashlib;
+
+   from Crypto.Cipher import DES3
+   import base64
+   def create_key(sk):
+
+       r=hashlib.md5(sk).digest()
+       return r+r[:8]
+
+   def init_str(s):
+       l=len(s) % 16
+       if l!=0:
+           c=16-l
+           s+=chr(c)*c
+       return s
+
+
+
+   key='ewfff'#秘钥
+   keys=create_key(key.encode())
+
+   ss=init_str('hello world')
+   des3=DES3.new(keys,DES3.MODE_ECB)
+   res2=des3.encrypt(ss)
+   b2bencryptkey=  base64.standard_b64encode(res2)
+   print(b2bencryptkey)
+
+4. 非对称加密算法
+~~~~~~~~~~~~~~~~~
+
+4.1 RSA算法
+^^^^^^^^^^^
+
+RSA是目前最有影响力的公钥加密算法，也是被普遍认为是目前最优秀的公钥方案之一。
+
+.. code:: python
+
+   import rsa
+    
+    
+   # rsa加密
+   def rsaEncrypt(str):
+       # 生成公钥、私钥
+       (pubkey, privkey) = rsa.newkeys(512)
+       print("公钥:\n%s\n私钥:\n:%s" % (pubkey, privkey))
+       # 明文编码格式
+       content = str.encode("utf-8")
+       # 公钥加密
+       crypto = rsa.encrypt(content, pubkey)
+       return (crypto, privkey)
+    
+    
+   # rsa解密
+   def rsaDecrypt(str, pk):
+       # 私钥解密
+       content = rsa.decrypt(str, pk)
+       con = content.decode("utf-8")
+       return con
+    
+    
+   if __name__ == "__main__":
+       str, pk = rsaEncrypt("hello")
+       print("加密后密文：\n%s" % str)
+       content = rsaDecrypt(str, pk)
+       print("解密后明文：\n%s" % content)
+
+4.3 ECC算法
+^^^^^^^^^^^
+
+ECC（椭圆加密算法）是一种公钥加密体制，主要优势是在某些情况下它比其他的方法使用更小的密钥（比如RSA加密算法）提供相当的或更高等级的安全。不过一个缺点是加密和解密操作的实现比其他机制时间长。它相比RSA算法，对
+CPU 消耗严重。
+
+.. code:: python
+
+   """
+       考虑K=kG ，其中K、G为椭圆曲线Ep(a,b)上的点，n为G的阶（nG=O∞ ），k为小于n的整数。
+       则给定k和G，根据加法法则，计算K很容易但反过来，给定K和G，求k就非常困难。
+       因为实际使用中的ECC原则上把p取得相当大，n也相当大，要把n个解点逐一算出来列成上表是不可能的。
+       这就是椭圆曲线加密算法的数学依据
+
+       点G称为基点（base point）
+
+       k（k<n）为私有密钥（privte key）
+
+       K为公开密钥（public key)
+   """
+
+
+   def get_inverse(mu, p):
+       """
+       获取y的负元
+       """
+       for i in range(1, p):
+           if (i*mu)%p == 1:
+               return i
+       return -1
+
+
+   def get_gcd(zi, mu):
+       """
+       获取最大公约数
+       """
+       if mu:
+           return get_gcd(mu, zi%mu)
+       else:
+           return zi
+
+
+   def get_np(x1, y1, x2, y2, a, p):
+       """
+       获取n*p，每次+p，直到求解阶数np=-p
+       """
+       flag = 1  # 定义符号位（+/-）
+
+       # 如果 p=q  k=(3x2+a)/2y1mod p
+       if x1 == x2 and y1 == y2:
+           zi = 3 * (x1 ** 2) + a  # 计算分子      【求导】
+           mu = 2 * y1    # 计算分母
+
+       # 若P≠Q，则k=(y2-y1)/(x2-x1) mod p
+       else:
+           zi = y2 - y1
+           mu = x2 - x1
+           if zi* mu < 0:
+               flag = 0        # 符号0为-（负数）
+               zi = abs(zi)
+               mu = abs(mu)
+
+       # 将分子和分母化为最简
+       gcd_value = get_gcd(zi, mu)     # 最大公約數
+       zi = zi // gcd_value            # 整除
+       mu = mu // gcd_value
+       # 求分母的逆元  逆元： ∀a ∈G ，ョb∈G 使得 ab = ba = e
+       # P(x,y)的负元是 (x,-y mod p)= (x,p-y) ，有P+(-P)= O∞
+       inverse_value = get_inverse(mu, p)
+       k = (zi * inverse_value)
+
+       if flag == 0:                   # 斜率负数 flag==0
+           k = -k
+       k = k % p
+       # 计算x3,y3 P+Q
+       """
+           x3≡k2-x1-x2(mod p)
+           y3≡k(x1-x3)-y1(mod p)
+       """
+       x3 = (k ** 2 - x1 - x2) % p
+       y3 = (k * (x1 - x3) - y1) % p
+       return x3,y3
+
+
+   def get_rank(x0, y0, a, b, p):
+       """
+       获取椭圆曲线的阶
+       """
+       x1 = x0             #-p的x坐标
+       y1 = (-1*y0)%p      #-p的y坐标
+       tempX = x0
+       tempY = y0
+       n = 1
+       while True:
+           n += 1
+           # 求p+q的和，得到n*p，直到求出阶
+           p_x,p_y = get_np(tempX, tempY, x0, y0, a, p)
+           # 如果 == -p,那么阶数+1，返回
+           if p_x == x1 and p_y == y1:
+               return n+1
+           tempX = p_x
+           tempY = p_y
+
+
+   def get_param(x0, a, b, p):
+       """
+       计算p与-p
+       """
+       y0 = -1
+       for i in range(p):
+           # 满足取模约束条件，椭圆曲线Ep(a,b)，p为质数，x,y∈[0,p-1]
+           if i**2%p == (x0**3 + a*x0 + b)%p:
+               y0 = i
+               break
+
+       # 如果y0没有，返回false
+       if y0 == -1:
+           return False
+
+       # 计算-y（负数取模）
+       x1 = x0
+       y1 = (-1*y0) % p
+       return x0,y0,x1,y1
+
+
+   def get_graph(a, b, p):
+       """
+       输出椭圆曲线散点图
+       """
+       x_y = []
+       # 初始化二维数组
+       for i in range(p):
+           x_y.append(['-' for i in range(p)])
+
+       for i in range(p):
+           val =get_param(i, a, b, p)  # 椭圆曲线上的点
+           if(val != False):
+               x0,y0,x1,y1 = val
+               x_y[x0][y0] = 1
+               x_y[x1][y1] = 1
+
+       print("椭圆曲线的散列图为：")
+       for i in range(p):              # i= 0-> p-1
+           temp = p-1-i        # 倒序
+
+           # 格式化输出1/2位数，y坐标轴
+           if temp >= 10:
+               print(temp, end=" ")
+           else:
+               print(temp, end="  ")
+
+           # 输出具体坐标的值，一行
+           for j in range(p):
+               print(x_y[j][temp], end="  ")
+           print("")   #换行
+
+       # 输出 x 坐标轴
+       print("  ", end="")
+       for i in range(p):
+           if i >=10:
+               print(i, end=" ")
+           else:
+               print(i, end="  ")
+       print('\n')
+
+
+   def get_ng(G_x, G_y, key, a, p):
+       """
+       计算nG
+       """
+       temp_x = G_x
+       temp_y = G_y
+       while key != 1:
+           temp_x,temp_y = get_np(temp_x,temp_y, G_x, G_y, a, p)
+           key -= 1
+       return temp_x,temp_y
+
+
+   def ecc_main():
+       while True:
+           a = int(input("请输入椭圆曲线参数a(a>0)的值："))
+           b = int(input("请输入椭圆曲线参数b(b>0)的值："))
+           p = int(input("请输入椭圆曲线参数p(p为素数)的值："))   #用作模运算
+
+           # 条件满足判断
+           if (4*(a**3)+27*(b**2))%p == 0:
+               print("您输入的参数有误，请重新输入！！！\n")
+           else:
+               break
+
+       # 输出椭圆曲线散点图
+       get_graph(a, b, p)
+
+       # 选点作为G点
+       print("user1：在如上坐标系中选一个值为G的坐标")
+       G_x = int(input("user1：请输入选取的x坐标值："))
+       G_y = int(input("user1：请输入选取的y坐标值："))
+
+       # 获取椭圆曲线的阶
+       n = get_rank(G_x, G_y, a, b, p)
+
+       # user1生成私钥，小key
+       key = int(input("user1：请输入私钥小key（<{}）：".format(n)))
+
+       # user1生成公钥，大KEY
+       KEY_x,kEY_y = get_ng(G_x, G_y, key, a, p)
+
+       # user2阶段
+       # user2拿到user1的公钥KEY，Ep(a,b)阶n，加密需要加密的明文数据
+       # 加密准备
+       k = int(input("user2：请输入一个整数k（<{}）用于求kG和kQ：".format(n)))
+       k_G_x,k_G_y = get_ng(G_x, G_y, k, a, p)                         # kG
+       k_Q_x,k_Q_y = get_ng(KEY_x, kEY_y, k, a, p)                     # kQ
+
+       # 加密
+       plain_text = input("user2：请输入需要加密的字符串:")
+       plain_text = plain_text.strip()
+       #plain_text = int(input("user1：请输入需要加密的密文："))
+       c = []
+       print("密文为：",end="")
+       for char in plain_text:
+           intchar = ord(char)
+           cipher_text = intchar*k_Q_x
+           c.append([k_G_x, k_G_y, cipher_text])
+           print("({},{}),{}".format(k_G_x, k_G_y, cipher_text),end="-")
+
+
+       # user1阶段
+       # 拿到user2加密的数据进行解密
+       # 知道 k_G_x,k_G_y，key情况下，求解k_Q_x,k_Q_y是容易的，然后plain_text = cipher_text/k_Q_x
+       print("\nuser1解密得到明文：",end="")
+       for charArr in c:
+           decrypto_text_x,decrypto_text_y = get_ng(charArr[0], charArr[1], key, a, p)
+           print(chr(charArr[2]//decrypto_text_x),end="")
+
+
+   if __name__ == "__main__":
+       ecc_main()
+
+5.常见加密算法对比
+~~~~~~~~~~~~~~~~~~
+
+5.1 单向散列加密算法
+^^^^^^^^^^^^^^^^^^^^
+
++--------+----------+--------+
+| 名称   | 运行速度 | 安全性 |
++========+==========+========+
+| MD5    | 快       | 中     |
++--------+----------+--------+
+| SHA1   | 慢       | 高     |
++--------+----------+--------+
+| SHA256 | 更慢     | 更高   |
++--------+----------+--------+
+
+.. _对称加密算法-1:
+
+5.2 对称加密算法
+^^^^^^^^^^^^^^^^
+
++------+-----------------+----------+--------+----------+
+| 名称 | 密钥            | 运行速度 | 安全性 | 资源消耗 |
++======+=================+==========+========+==========+
+| DES  | 56位            | 较快     | 低     | 中       |
++------+-----------------+----------+--------+----------+
+| 3DES | 112位或168位    | 慢       | 中     | 高       |
++------+-----------------+----------+--------+----------+
+| AES  | 128、192、256位 | 快       | 高     | 低       |
++------+-----------------+----------+--------+----------+
+
+.. _非对称加密算法-1:
+
+5.3 非对称加密算法
+^^^^^^^^^^^^^^^^^^
+
++------+--------+--------+----------+----------+
+| 名称 | 成熟度 | 安全性 | 运算速度 | 资源消耗 |
++======+========+========+==========+==========+
+| RSA  | 高     | 高     | 中       | 中       |
++------+--------+--------+----------+----------+
+| ECC  | 高     | 高     | 慢       | 高       |
++------+--------+--------+----------+----------+
