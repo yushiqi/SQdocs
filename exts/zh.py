@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from sphinx.search import SearchLanguage
-from smallseg import SEG 
+from smallseg import SEG
 
 class SearchChinese(SearchLanguage):
     lang = 'zh'

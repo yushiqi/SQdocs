@@ -8,14 +8,15 @@ xrange = range  # Python 3
 
 class SEG(object):
     def __init__(self):
+
         _localDir=os.path.dirname(__file__)
         _curpath=os.path.normpath(os.path.join(os.getcwd(),_localDir))
         curpath=_curpath
         self.d = {}
         print("loading dict...", file=sys.stderr)
-        with open(os.path.join(curpath, "main.dic")) as in_file:
+        with open(os.path.join(curpath, "main.dic"), 'r', encoding='UTF-8') as in_file:
             self.set([x.rstrip() for x in in_file])
-        with open(os.path.join(curpath,"suffix.dic")) as in_file:
+        with open(os.path.join(curpath,"suffix.dic"), 'r', encoding='UTF-8') as in_file:
             self.specialwords= set([x.rstrip() for x in in_file])
         print('dict ok.', file=sys.stderr)
     #set dictionary(a list)
@@ -146,3 +147,13 @@ class SEG(object):
         else:
             recognised.extend(self._pro_unreg(text[i-j:z]))
         return recognised
+
+
+if __name__ == '__main__':
+    _localDir = os.path.dirname(__file__)
+
+    _curpath = os.path.normpath(os.path.join(os.getcwd(), _localDir))
+    curpath = _curpath
+    with open(os.path.join(curpath, "main.dic"), 'r', encoding='UTF-8') as in_file:
+        for x in in_file:
+            print(x)
