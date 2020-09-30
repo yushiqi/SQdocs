@@ -25,7 +25,7 @@
 
 - 安装
 
-可参照[Sphnix官网文档](https://pandoc.org/installing.html)
+可参照[Sphnix官网文档](https://www.sphinx-doc.org/en/master/index.html)
 
 
 
@@ -59,7 +59,7 @@ sphinx-quickstart
 
 > source：这是存放.rst文件的目录。
 
-> > conf.py：\用于存放 Sphinx 的配置值
+> > conf.py：用于存放 Sphinx 的配置值
 
 > > index.rst：文档项目的 root 目录
 

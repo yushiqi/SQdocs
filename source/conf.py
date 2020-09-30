@@ -79,7 +79,7 @@ htmlhelp_basename = "于世奇的博客"
 
 latex_elements={# The paper size ('letterpaper' or 'a4paper').
 'papersize':'a4paper',# The font size ('10pt', '11pt' or '12pt').
-'pointsize':'12pt','classoptions':',oneside','babel':'',#必须
+'pointsize':'16pt','classoptions':',oneside','babel':'',#必须
 'inputenc':'',#必须
 'utf8extra':'',#必须
 # Additional stuff for the LaTeX preamble.
