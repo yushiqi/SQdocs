@@ -17,7 +17,7 @@ import sys
 
 # -- Project information -----------------------------------------------------
 
-project = "Wonderful World"
+project = "世奇笔记"
 copyright = '2020, yushiqi'
 author = 'yushiqi'
 
