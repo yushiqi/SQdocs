@@ -1,7 +1,7 @@
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-build/
+#build/
 .idea/
 *.pyc
 venv/

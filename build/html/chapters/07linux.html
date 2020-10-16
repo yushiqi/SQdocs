@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>第七章：Linux笔记 &mdash; 世奇笔记 V1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="7.1 dd命令" href="../c07/01dd%E5%91%BD%E4%BB%A4.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../c06/09redis%E6%8C%87%E5%8D%97.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> 世奇笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                V1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01jichu.html">第一章：Python基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02gaoji.html">第二章：高级编程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03yibu.html">第三章：异步IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04web.html">第四章：Web开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05fenxi.html">第五章：数据分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06gongju.html">第六章：开发工具</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">第七章：Linux笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c07/01dd%E5%91%BD%E4%BB%A4.html">7.1 dd命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/02ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%8C%82%E8%BD%BD%E6%96%B0%E7%A1%AC%E7%9B%98.html">7.2 ubuntu环境下挂载新硬盘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html">7.3 硬盘SMART检测参数详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/04nohup%E5%91%BD%E4%BB%A4.html">7.4 nohup命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/05crontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html">7.5 crontab定时任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">7.6 vim常用命令</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="08net.html">第八章：网络基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09keng.html">第九章：踩坑记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10suanfa.html">第十章：数据结构与算法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11keshihua.html">第十一章：数据可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">关于作者</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">世奇笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>第七章：Linux笔记</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/chapters/07linux.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux">
+<h1>第七章：Linux笔记<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../c07/01dd%E5%91%BD%E4%BB%A4.html">7.1 dd命令</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c07/01dd%E5%91%BD%E4%BB%A4.html#dd-1">1. dd命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/01dd%E5%91%BD%E4%BB%A4.html#id2">2. dd应用实例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/01dd%E5%91%BD%E4%BB%A4.html#dev-null-dev-zero">3. /dev/null和/dev/zero的区别</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/01dd%E5%91%BD%E4%BB%A4.html#id11">4. 创建大文件</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../c07/02ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%8C%82%E8%BD%BD%E6%96%B0%E7%A1%AC%E7%9B%98.html">7.2 ubuntu环境下挂载新硬盘</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../c07/03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html">7.3 硬盘SMART检测参数详解</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c07/03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html#id1">1. SMART概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html#id2">2. smart信息解读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html#id3">3. SMART参数详解</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../c07/04nohup%E5%91%BD%E4%BB%A4.html">7.4 nohup命令</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c07/04nohup%E5%91%BD%E4%BB%A4.html#id1">1. 基本使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/04nohup%E5%91%BD%E4%BB%A4.html#id2">2. 输出文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/04nohup%E5%91%BD%E4%BB%A4.html#id3">3. 不输出日志文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/04nohup%E5%91%BD%E4%BB%A4.html#id4">4. 日志按天输出</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../c07/05crontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html">7.5 crontab定时任务</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c07/05crontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html#id1">1. 基本使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/05crontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html#id2">2. 常用命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/05crontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html#id3">3. 脚本无法执行问题</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">7.6 vim常用命令</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id1">1. vim的几种模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id2">2. 启动vim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id3">3. 导航命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id4">4. 插入命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id5">5. 查找命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id6">6. 替换命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id7">7. 移动命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id8">8. 撤销重做</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id9">9. 删除命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id10">10. 复制黏贴</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id11">11. 剪切命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id12">12. 退出命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id13">13. 窗口命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id14">14. 排版功能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id15">15. 注释命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id16">16. 调整视野</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id17">17. 区域选择</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id18">18. 窗口控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id19">19. 文档加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id20">20. 执行命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id21">21. 帮助命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c07/06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html#id22">22. 配置命令</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../c07/01dd%E5%91%BD%E4%BB%A4.html" class="btn btn-neutral float-right" title="7.1 dd命令" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../c06/09redis%E6%8C%87%E5%8D%97.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yushiqi
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

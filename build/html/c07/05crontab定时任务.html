@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.5 crontab定时任务 &mdash; 世奇笔记 V1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="7.6 vim常用命令" href="06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html" />
+    <link rel="prev" title="7.4 nohup命令" href="04nohup%E5%91%BD%E4%BB%A4.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> 世奇笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                V1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/01jichu.html">第一章：Python基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/02gaoji.html">第二章：高级编程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/03yibu.html">第三章：异步IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/04web.html">第四章：Web开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/05fenxi.html">第五章：数据分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/06gongju.html">第六章：开发工具</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/07linux.html">第七章：Linux笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01dd%E5%91%BD%E4%BB%A4.html">7.1 dd命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%8C%82%E8%BD%BD%E6%96%B0%E7%A1%AC%E7%9B%98.html">7.2 ubuntu环境下挂载新硬盘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html">7.3 硬盘SMART检测参数详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04nohup%E5%91%BD%E4%BB%A4.html">7.4 nohup命令</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.5 crontab定时任务</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1. 基本使用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2. 常用命令</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3. 脚本无法执行问题</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">7.6 vim常用命令</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/08net.html">第八章：网络基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/09keng.html">第九章：踩坑记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/10suanfa.html">第十章：数据结构与算法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/11keshihua.html">第十一章：数据可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">关于作者</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">世奇笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/07linux.html">第七章：Linux笔记</a> &raquo;</li>
+        
+      <li>7.5 crontab定时任务</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/c07/05crontab定时任务.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="crontab">
+<h1>7.5 crontab定时任务<a class="headerlink" href="#crontab" title="永久链接至标题">¶</a></h1>
+<p>Linux crontab是用来定期执行程序的命令。</p>
+<p>crond
+命令每分钟会定期检查是否有要执行的工作，如果有要执行的工作便会自动执行该工作。</p>
+<p><strong>注意：</strong>新创建的 cron 任务，不会马上执行，至少要过 2
+分钟后才可以，可以重启 cron 来马上执行。</p>
+<div class="section" id="id1">
+<h2>1. 基本使用<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>linux 任务调度的工作主要分为以下两类：</p>
+<ul class="simple">
+<li><p>系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存</p></li>
+<li><p>个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置</p></li>
+</ul>
+<p><strong>语法</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crontab</span> <span class="p">[</span> <span class="o">-</span><span class="n">u</span> <span class="n">user</span> <span class="p">]</span> <span class="n">file</span>
+</pre></div>
+</div>
+<p>或</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crontab</span> <span class="p">[</span> <span class="o">-</span><span class="n">u</span> <span class="n">user</span> <span class="p">]</span> <span class="p">{</span> <span class="o">-</span><span class="n">l</span> <span class="o">|</span> <span class="o">-</span><span class="n">r</span> <span class="o">|</span> <span class="o">-</span><span class="n">e</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>说明：</strong></p>
+<p>crontab
+是用来让使用者在固定时间或固定间隔执行程序之用，换句话说，也就是类似使用者的时程表。</p>
+<p>-u user 是指设定指定 user 的时程表，这个前提是你必须要有其权限(比如说是
+root)才能够指定他人的时程表。如果不使用 -u user
+的话，就是表示设定自己的时程表。</p>
+<p><strong>参数说明</strong>：</p>
+<ul class="simple">
+<li><p>-e : 执行文字编辑器来设定时程表，内定的文字编辑器是
+VI，如果你想用别的文字编辑器，则请先设定 VISUAL
+环境变数来指定使用那个文字编辑器(比如说 setenv VISUAL joe)</p></li>
+<li><p>-r : 删除目前的时程表</p></li>
+<li><p>-l : 列出目前的时程表</p></li>
+</ul>
+<p>时间格式如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f1</span> <span class="n">f2</span> <span class="n">f3</span> <span class="n">f4</span> <span class="n">f5</span> <span class="n">program</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>其中 f1 是表示分钟，f2 表示小时，f3 表示一个月份中的第几日，f4
+表示月份，f5 表示一个星期中的第几天。program 表示要执行的程序。</p></li>
+<li><p>当 f1 为 * 时表示每分钟都要执行 program，f2 为 *
+时表示每小时都要执行程序，其馀类推</p></li>
+<li><p>当 f1 为 a-b 时表示从第 a 分钟到第 b 分钟这段时间内要执行，f2 为 a-b
+时表示从第 a 到第 b 小时都要执行，其馀类推</p></li>
+<li><p>当 f1 为 <em>/n 时表示每 n 分钟个时间间隔执行一次，f2 为</em>/n 表示每 n
+小时个时间间隔执行一次，其馀类推</p></li>
+<li><p>当 f1 为 a, b, c,… 时表示第 a, b, c,… 分钟要执行，f2 为 a, b, c,…
+时表示第 a, b, c…个小时要执行，其馀类推</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>    <span class="o">*</span>    <span class="o">*</span>    <span class="o">*</span>    <span class="o">*</span>
+<span class="o">-</span>    <span class="o">-</span>    <span class="o">-</span>    <span class="o">-</span>    <span class="o">-</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">+-----</span> <span class="n">星期中星期几</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="p">(</span><span class="n">星期天</span> <span class="n">为0</span><span class="p">)</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">|</span>    <span class="o">+----------</span> <span class="n">月份</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">12</span><span class="p">)</span>
+<span class="o">|</span>    <span class="o">|</span>    <span class="o">+---------------</span> <span class="n">一个月中的第几天</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">31</span><span class="p">)</span>
+<span class="o">|</span>    <span class="o">+--------------------</span> <span class="n">小时</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">23</span><span class="p">)</span>
+<span class="o">+-------------------------</span> <span class="n">分钟</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">59</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>使用者也可以将所有的设定先存放在文件中，用 crontab file
+的方式来设定执行时间。</p>
+<p><strong>实例</strong></p>
+<p>每一分钟执行一次 /bin/ls：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ls</span>
+</pre></div>
+</div>
+<p>在 12 月内, 每天的早上 6 点到 12 点，每隔 3 个小时 0 分钟执行一次
+/usr/bin/backup：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="mi">6</span><span class="o">-</span><span class="mi">12</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">backup</span>
+</pre></div>
+</div>
+<p>周一到周五每天下午 5:00 寄一封信给 <a class="reference external" href="mailto:alex&#37;&#52;&#48;domain&#46;name">alex<span>&#64;</span>domain<span>&#46;</span>name</a>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="mi">17</span> <span class="o">*</span> <span class="o">*</span> <span class="mi">1</span><span class="o">-</span><span class="mi">5</span> <span class="n">mail</span> <span class="o">-</span><span class="n">s</span> <span class="s2">&quot;hi&quot;</span> <span class="n">alex</span><span class="nd">@domain</span><span class="o">.</span><span class="n">name</span> <span class="o">&lt;</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">maildata</span>
+</pre></div>
+</div>
+<p>每月每天的午夜 0 点 20 分, 2 点 20 分, 4 点 20 分….执行 echo “haha”：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">20</span> <span class="mi">0</span><span class="o">-</span><span class="mi">23</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">echo</span> <span class="s2">&quot;haha&quot;</span>
+</pre></div>
+</div>
+<p>下面再看看几个具体的例子：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">0</span> */2 * * * /sbin/service httpd restart  意思是每两个小时重启一次apache
+
+<span class="m">50</span> <span class="m">7</span> * * * /sbin/service sshd start  意思是每天7：50开启ssh服务
+
+<span class="m">50</span> <span class="m">22</span> * * * /sbin/service sshd stop  意思是每天22：50关闭ssh服务
+
+<span class="m">0</span> <span class="m">0</span> <span class="m">1</span>,15 * * fsck /home  每月1号和15号检查/home 磁盘
+
+<span class="m">1</span> * * * * /home/bruce/backup  每小时的第一分执行 /home/bruce/backup这个文件
+
+<span class="m">00</span> <span class="m">03</span> * * <span class="m">1</span>-5 find /home <span class="s2">&quot;*.xxx&quot;</span> -mtime +4 -exec rm <span class="o">{}</span> <span class="se">\;</span>  每周一至周五3点钟，在目录/home中，查找文件名为*.xxx的文件，并删除4天前的文件。
+
+<span class="m">30</span> <span class="m">6</span> */10 * * ls  意思是每月的1、11、21、31日是的6：30执行一次ls命令
+</pre></div>
+</div>
+<p><strong>注意：</strong>当程序在你所指定的时间执行后，系统会发一封邮件给当前的用户，显示该程序执行的内容，若是你不希望收到这样的邮件，请在每一行空一格之后加上
+<strong>&gt; /dev/null 2&gt;&amp;1</strong> 即可，如：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">20</span> <span class="m">03</span> * * * . /etc/profile<span class="p">;</span>/bin/sh test.sh &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>2. 常用命令<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>crontab服务操作说明：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/sbin/service crond start //启动服务
+
+/sbin/service crond stop //关闭服务
+
+/sbin/service crond restart //重启服务
+
+/sbin/service crond reload //重新载入配置
+</pre></div>
+</div>
+<p>查看crontab服务状态：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>service crond status
+</pre></div>
+</div>
+<p>手动启动crontab服务：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>service crond status
+</pre></div>
+</div>
+<p>查看crontab服务是否已设置为开机启动，执行命令：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>方法一： 界面启动   ntsysv
+
+方法二： 加入开机自动启动：  chkconfig –level <span class="m">35</span> crond on
+</pre></div>
+</div>
+<p>查看定时任务列表</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>crontab -l
+</pre></div>
+</div>
+<p>编辑定时任务</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>crontab –e
+或
+vim /var/spool/cron/root
+</pre></div>
+</div>
+<p>crontab -r 删除定时任务</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>从/var/spool/cron目录中删除用户的crontab文件
+
+如果不指定用户，则默认删除当前用户的crontab文件
+
+crontab –i 在删除用户的crontab 文件时给确认提示
+</pre></div>
+</div>
+<p>备份crontab文件</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>crontab -l &gt; <span class="nv">$HOME</span>/mycron
+</pre></div>
+</div>
+<p>恢复丢失的crontab文件</p>
+<blockquote>
+<div><p>如果不小心误删了<code class="docutils literal notranslate"><span class="pre">crontab</span></code>文件，假设你在自己的<code class="docutils literal notranslate"><span class="pre">$HOME</span></code>目录下还有一个备份，那么可以将其拷贝到/var/spool/cron/，其中是用户名。如果由于权限问题无法完成拷贝，可以用：crontab
+其中，是你在<code class="docutils literal notranslate"><span class="pre">$HOME</span></code>目录中副本的文件名。</p>
+</div></blockquote>
+<blockquote>
+<div><p>有些<code class="docutils literal notranslate"><span class="pre">crontab</span></code>的变体有些怪异，所以在使用<code class="docutils literal notranslate"><span class="pre">crontab</span></code>命令时要格外小心。如果遗漏了任何选项，<code class="docutils literal notranslate"><span class="pre">crontab</span></code>可能会打开一个空文件，或者看起来像是个空文件。这时敲delete键退出，不要按，否则你将丢失<code class="docutils literal notranslate"><span class="pre">crontab</span></code>文件。</p>
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h2>3. 脚本无法执行问题<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>如果我们使用 crontab
+来定时执行脚本，无法执行，但是如果直接通过命令（如：./test.sh)又可以正常执行，这主要是因为无法读取环境变量的原因。</p>
+<p><strong>解决方法：</strong></p>
+<ol class="arabic simple">
+<li><p>所有命令需要写成绝对路径形式，如: <strong>/usr/local/bin/docker</strong>。</p></li>
+<li><p>在 shell 脚本开头使用以下代码：</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="o">.</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">profile</span>
+<span class="o">.</span> <span class="o">~/.</span><span class="n">bash_profile</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>在 <strong>/etc/crontab</strong> 中添加环境变量，在可执行命令之前添加命令 <strong>.
+/etc/profile;/bin/sh</strong>例如：</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">20</span> <span class="mi">03</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">.</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">profile</span><span class="p">;</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span> <span class="n">test</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html" class="btn btn-neutral float-right" title="7.6 vim常用命令" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="04nohup%E5%91%BD%E4%BB%A4.html" class="btn btn-neutral float-left" title="7.4 nohup命令" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yushiqi
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

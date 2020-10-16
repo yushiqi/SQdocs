@@ -19,12 +19,13 @@ import sys
 
 project = "世奇笔记"
 copyright = '2020, yushiqi'
+
 author = 'yushiqi'
 
 # The short X.Y version.
-version = '1.0'
+version = 'V1.0'
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = 'V1.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -77,23 +78,29 @@ htmlhelp_basename = "于世奇的博客"
 # 注：在生成html的时候这句话要注释
 # latex_engine = 'xelatex'
 
-latex_elements={# The paper size ('letterpaper' or 'a4paper').
-'papersize':'a4paper',# The font size ('10pt', '11pt' or '12pt').
-'pointsize':'16pt','classoptions':',oneside','babel':'',#必须
-'inputenc':'',#必须
-'utf8extra':'',#必须
+latex_elements={
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'a4paper',
+    # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '10pt',
+    'classoptions': ',oneside',
+    'babel': '',#必须
+    'inputenc': '',#必须
+    'utf8extra': '',#必须
 # Additional stuff for the LaTeX preamble.
-'preamble': r"""
-\usepackage{xeCJK}
-\usepackage{indentfirst}
-\setlength{\parindent}{2em}
-\setCJKmainfont{WenQuanYi Micro Hei}
-\setCJKmonofont[Scale=0.9]{WenQuanYi Micro Hei Mono}
-\setCJKfamilyfont{song}{WenQuanYi Micro Hei}
-\setCJKfamilyfont{sf}{WenQuanYi Micro Hei}
-\XeTeXlinebreaklocale "zh"
-\XeTeXlinebreakskip = 0pt plus 1pt
-"""}
+# 'preamble': r"""
+# \usepackage{xeCJK}
+# \usepackage{indentfirst}
+# \setlength{\parindent}{2em}
+# \setCJKmainfont{WenQuanYi Micro Hei}
+
+# \setCJKmonofont[Scale=0.9]{WenQuanYi Micro Hei Mono}
+# \setCJKfamilyfont{song}{WenQuanYi Micro Hei}
+# \setCJKfamilyfont{sf}{WenQuanYi Micro Hei}
+# \XeTeXlinebreaklocale "zh"
+# \XeTeXlinebreakskip = 0pt plus 1pt
+# """
+}
 
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

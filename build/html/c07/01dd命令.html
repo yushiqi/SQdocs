@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.1 dd命令 &mdash; 世奇笔记 V1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="7.2 ubuntu环境下挂载新硬盘" href="02ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%8C%82%E8%BD%BD%E6%96%B0%E7%A1%AC%E7%9B%98.html" />
+    <link rel="prev" title="第七章：Linux笔记" href="../chapters/07linux.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> 世奇笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                V1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/01jichu.html">第一章：Python基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/02gaoji.html">第二章：高级编程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/03yibu.html">第三章：异步IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/04web.html">第四章：Web开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/05fenxi.html">第五章：数据分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/06gongju.html">第六章：开发工具</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/07linux.html">第七章：Linux笔记</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.1 dd命令</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dd-1">1. dd命令</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2. dd应用实例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dev-hdb-dev-hdd">2.1 将本地的/dev/hdb整盘备份到/dev/hdd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dev-hdbimage">2.2 将/dev/hdb全盘数据备份到指定路径的image文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">2.3 将备份文件恢复到指定盘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dev-hdb-gzip">2.4 备份/dev/hdb全盘数据，并利用gzip工具进行压缩，保存到指定路径</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">2.5 将压缩的备份文件恢复到指定盘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mbr">2.6 备份与恢复MBR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">2.7 备份软盘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">2.8 拷贝内存内容到硬盘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cd-iso">2.9 拷贝光盘内容到指定文件夹，并保存为cd.iso文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#swap">2.10 增加swap分区文件大小</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">2.11 销毁磁盘数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">2.12 测试硬盘的读写速度</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">2.13 确定硬盘的最佳块大小：</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">2.14 修复硬盘：</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#netcat">2.15 利用netcat远程备份</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i0x41-aascii">2.16 将一个很大的视频文件中的第i个字节的值改成0x41（也就是大写字母A的ASCII值）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dev-null-dev-zero">3. /dev/null和/dev/zero的区别</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">4. 创建大文件</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="02ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%8C%82%E8%BD%BD%E6%96%B0%E7%A1%AC%E7%9B%98.html">7.2 ubuntu环境下挂载新硬盘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html">7.3 硬盘SMART检测参数详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04nohup%E5%91%BD%E4%BB%A4.html">7.4 nohup命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05crontab%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html">7.5 crontab定时任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06vim%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">7.6 vim常用命令</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/08net.html">第八章：网络基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/09keng.html">第九章：踩坑记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/10suanfa.html">第十章：数据结构与算法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/11keshihua.html">第十一章：数据可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">关于作者</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">世奇笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/07linux.html">第七章：Linux笔记</a> &raquo;</li>
+        
+      <li>7.1 dd命令</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/c07/01dd命令.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dd">
+<h1>7.1 dd命令<a class="headerlink" href="#dd" title="永久链接至标题">¶</a></h1>
+<div class="section" id="dd-1">
+<span id="id1"></span><h2>1. dd命令<a class="headerlink" href="#dd-1" title="永久链接至标题">¶</a></h2>
+<p>dd：用指定大小的块拷贝一个文件，并在拷贝的同时进行指定的转换。</p>
+<p><strong>注意</strong>：指定数字的地方若以下列字符结尾，则乘以相应的数字：b=512；c=1；k=1024；w=2</p>
+<p><strong>参数注释：</strong></p>
+<ul class="simple">
+<li><p>if=文件名：输入文件名，缺省为标准输入。即指定源文件。&lt; if=input file
+&gt;</p></li>
+<li><p>of=文件名：输出文件名，缺省为标准输出。即指定目的文件。&lt; of=output
+file &gt;</p></li>
+<li><p>ibs=bytes：一次读入bytes个字节，即指定一个块大小为bytes个字节。
+obs=bytes：一次输出bytes个字节，即指定一个块大小为bytes个字节。
+bs=bytes：同时设置读入/输出的块大小为bytes个字节。</p></li>
+<li><p>cbs=bytes：一次转换bytes个字节，即指定转换缓冲区大小。</p></li>
+<li><p>skip=blocks：从输入文件开头跳过blocks个块后再开始复制。</p></li>
+<li><p>seek=blocks：从输出文件开头跳过blocks个块后再开始复制。
+注意：通常只用当输出文件是磁盘或磁带时才有效，即备份到磁盘或磁带时才有效。</p></li>
+<li><p>count=blocks：仅拷贝blocks个块，块大小等于ibs指定的字节数。</p></li>
+<li><p>conv=conversion：用指定的参数转换文件。</p>
+<ul>
+<li><p>ascii：转换ebcdic为ascii</p></li>
+<li><p>ebcdic：转换ascii为ebcdic</p></li>
+<li><p>ibm：转换ascii为alternate ebcdic</p></li>
+<li><p>block：把每一行转换为长度为cbs，不足部分用空格填充</p></li>
+<li><p>unblock：使每一行的长度都为cbs，不足部分用空格填充</p></li>
+<li><p>lcase：把大写字符转换为小写字符</p></li>
+<li><p>ucase：把小写字符转换为大写字符</p></li>
+<li><p>swab：交换输入的每对字节</p></li>
+<li><p>noerror：出错时不停止</p></li>
+<li><p>notrunc：不截短输出文件</p></li>
+<li><p>sync：将每个输入块填充到ibs个字节，不足部分用空（NUL）字符补齐。</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>2. dd应用实例<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="dev-hdb-dev-hdd">
+<h3>2.1 将本地的/dev/hdb整盘备份到/dev/hdd<a class="headerlink" href="#dev-hdb-dev-hdd" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/hdb <span class="nv">of</span><span class="o">=</span>/dev/hdd
+</pre></div>
+</div>
+</div>
+<div class="section" id="dev-hdbimage">
+<h3>2.2 将/dev/hdb全盘数据备份到指定路径的image文件<a class="headerlink" href="#dev-hdbimage" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/hdb <span class="nv">of</span><span class="o">=</span>/root/image
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>2.3 将备份文件恢复到指定盘<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dd</span> <span class="k">if</span><span class="o">=/</span><span class="n">root</span><span class="o">/</span><span class="n">image</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">hdb</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dev-hdb-gzip">
+<h3>2.4 备份/dev/hdb全盘数据，并利用gzip工具进行压缩，保存到指定路径<a class="headerlink" href="#dev-hdb-gzip" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/hdb <span class="p">|</span> gzip&gt; /root/image.gz
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>2.5 将压缩的备份文件恢复到指定盘<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gzip -dc /root/image.gz <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/hdb
+</pre></div>
+</div>
+</div>
+<div class="section" id="mbr">
+<h3>2.6 备份与恢复MBR<a class="headerlink" href="#mbr" title="永久链接至标题">¶</a></h3>
+<p>备份磁盘开始的512个字节大小的MBR信息到指定文件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/hda <span class="nv">of</span><span class="o">=</span>/root/image <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">bs</span><span class="o">=</span><span class="m">512</span>
+</pre></div>
+</div>
+<p>count=1指仅拷贝一个块；bs=512指块大小为512个字节。</p>
+<p>恢复：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/root/image <span class="nv">of</span><span class="o">=</span>/dev/had
+</pre></div>
+</div>
+<p>将备份的MBR信息写到磁盘开始部分</p>
+</div>
+<div class="section" id="id5">
+<h3>2.7 备份软盘<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/fd0 <span class="nv">of</span><span class="o">=</span>disk.img <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">bs</span><span class="o">=</span>1440k <span class="o">(</span>即块大小为1.44M<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>2.8 拷贝内存内容到硬盘<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/mem <span class="nv">of</span><span class="o">=</span>/root/mem.bin <span class="nv">bs</span><span class="o">=</span><span class="m">1024</span> <span class="o">(</span>指定块大小为1k<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cd-iso">
+<h3>2.9 拷贝光盘内容到指定文件夹，并保存为cd.iso文件<a class="headerlink" href="#cd-iso" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/cdrom<span class="o">(</span>hdc<span class="o">)</span> <span class="nv">of</span><span class="o">=</span>/root/cd.iso
+</pre></div>
+</div>
+</div>
+<div class="section" id="swap">
+<h3>2.10 增加swap分区文件大小<a class="headerlink" href="#swap" title="永久链接至标题">¶</a></h3>
+<p>第一步：创建一个大小为256M的文件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/swapfile <span class="nv">bs</span><span class="o">=</span><span class="m">1024</span> <span class="nv">count</span><span class="o">=</span><span class="m">262144</span>
+</pre></div>
+</div>
+<p>第二步：把这个文件变成swap文件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkswap /swapfile
+</pre></div>
+</div>
+<p>第三步：启用这个swap文件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>swapon /swapfile
+</pre></div>
+</div>
+<p>第四步：编辑/etc/fstab文件，使在每次开机时自动加载swap文件：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/swapfile swap swap default <span class="m">0</span> <span class="m">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>2.11 销毁磁盘数据<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/urandom <span class="nv">of</span><span class="o">=</span>/dev/hda1
+</pre></div>
+</div>
+<p>注意：利用随机的数据填充硬盘，在某些必要的场合可以用来销毁数据。</p>
+</div>
+<div class="section" id="id8">
+<h3>2.12 测试硬盘的读写速度<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">bs</span><span class="o">=</span><span class="m">1024</span> <span class="nv">count</span><span class="o">=</span><span class="m">1000000</span> <span class="nv">of</span><span class="o">=</span>/root/1Gb.file
+
+<span class="nv">ddif</span><span class="o">=</span>/root/1Gb.file <span class="nv">bs</span><span class="o">=</span>64k <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/null
+</pre></div>
+</div>
+<p>通过以上两个命令输出的命令执行时间，可以计算出硬盘的读、写速度。</p>
+</div>
+<div class="section" id="id9">
+<h3>2.13 确定硬盘的最佳块大小：<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">bs</span><span class="o">=</span><span class="m">1024</span> <span class="nv">count</span><span class="o">=</span><span class="m">1000000</span> <span class="nv">of</span><span class="o">=</span>/root/1Gb.file
+
+dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">bs</span><span class="o">=</span><span class="m">2048</span> <span class="nv">count</span><span class="o">=</span><span class="m">500000</span> <span class="nv">of</span><span class="o">=</span>/root/1Gb.file
+
+dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">bs</span><span class="o">=</span><span class="m">4096</span> <span class="nv">count</span><span class="o">=</span><span class="m">250000</span> <span class="nv">of</span><span class="o">=</span>/root/1Gb.file
+
+dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">bs</span><span class="o">=</span><span class="m">8192</span> <span class="nv">count</span><span class="o">=</span><span class="m">125000</span> <span class="nv">of</span><span class="o">=</span>/root/1Gb.file
+</pre></div>
+</div>
+<p>通过比较以上命令输出中所显示的命令执行时间，即可确定系统最佳的块大小。</p>
+</div>
+<div class="section" id="id10">
+<h3>2.14 修复硬盘：<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/sda <span class="nv">of</span><span class="o">=</span>/dev/sda 或dd <span class="k">if</span><span class="o">=</span>/dev/hda <span class="nv">of</span><span class="o">=</span>/dev/hda
+</pre></div>
+</div>
+<p>当硬盘较长时间(一年以上)放置不使用后，磁盘上会产生magnetic flux
+point，当磁头读到这些区域时会遇到困难，并可能导致I/O错误。当这种情况影响到硬盘的第一个扇区时，可能导致硬盘报废。上边的命令有可能使这些数
+据起死回生。并且这个过程是安全、高效的。</p>
+</div>
+<div class="section" id="netcat">
+<h3>2.15 利用netcat远程备份<a class="headerlink" href="#netcat" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/hda <span class="nv">bs</span><span class="o">=</span>16065b <span class="p">|</span> netcat &lt; targethost-IP &gt; <span class="m">1234</span>
+</pre></div>
+</div>
+<p>在源主机上执行此命令备份/dev/hda</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>netcat -l -p <span class="m">1234</span> <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/hdc <span class="nv">bs</span><span class="o">=</span>16065b
+</pre></div>
+</div>
+<p>在目的主机上执行此命令来接收数据并写入/dev/hdc</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>netcat -l -p <span class="m">1234</span> <span class="p">|</span> bzip2 &gt; partition.img
+
+netcat -l -p <span class="m">1234</span> <span class="p">|</span> gzip &gt; partition.img
+</pre></div>
+</div>
+<p>以上两条指令是目的主机指令的变化分别采用bzip2、gzip对数据进行压缩，并将备份文件保存在当前目录。</p>
+</div>
+<div class="section" id="i0x41-aascii">
+<h3>2.16 将一个很大的视频文件中的第i个字节的值改成0x41（也就是大写字母A的ASCII值）<a class="headerlink" href="#i0x41-aascii" title="永久链接至标题">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> A <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>bigfile <span class="nv">seek</span><span class="o">=</span><span class="nv">$i</span> <span class="nv">bs</span><span class="o">=</span><span class="m">1</span> <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">conv</span><span class="o">=</span>notrunc
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dev-null-dev-zero">
+<h2>3. /dev/null和/dev/zero的区别<a class="headerlink" href="#dev-null-dev-zero" title="永久链接至标题">¶</a></h2>
+<p><strong>/dev/null</strong>，外号叫无底洞，你可以向它输出任何数据，它通吃，并且不会撑着！</p>
+<p><strong>/dev/zero</strong>，是一个输入设备，你可你用它来初始化文件。该设备无穷尽地提供0，可以使用任何你需要的数目——设备提供的要多的多。他可以用于向设备或文件写入字符串0。</p>
+<p><strong>/dev/null</strong>，它是空设备，也称为位桶（bit
+bucket）。任何写入它的输出都会被抛弃。如果不想让消息以标准输出显示或写入文件，那么可以将消息重定向到位桶。</p>
+</div>
+<div class="section" id="id11">
+<h2>4. 创建大文件<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>dd命令可以轻易实现创建指定大小的文件，如</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span><span class="nb">test</span> <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1000</span>
+</pre></div>
+</div>
+<p>会生成一个1000M的test文件，文件内容为全0（因从/dev/zero中读取，/dev/zero为0源）但是这样为实际写入硬盘，文件产生速度取决于硬盘读写速度，如果欲产生超大文件，速度很慢</p>
+<p>在某种场景下，我们只想让文件系统认为存在一个超大文件在此，但是并不实际写入硬盘</p>
+<p>则可以</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span><span class="nb">test</span> <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">0</span> <span class="nv">seek</span><span class="o">=</span><span class="m">100000</span>
+</pre></div>
+</div>
+<p>此时创建的文件在文件系统中的显示大小为100000MB，但是并不实际占用block，因此创建速度与内存速度相当</p>
+<p><strong>seek</strong>的作用是跳过输出文件中指定大小的部分，这就达到了创建大文件，但是并不实际写入的目的。当然，因为不实际写入硬盘，所以你在容量只有10G的硬盘上创建100G的此类文件都是可以的。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="02ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%8C%82%E8%BD%BD%E6%96%B0%E7%A1%AC%E7%9B%98.html" class="btn btn-neutral float-right" title="7.2 ubuntu环境下挂载新硬盘" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../chapters/07linux.html" class="btn btn-neutral float-left" title="第七章：Linux笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yushiqi
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
